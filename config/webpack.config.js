@@ -371,6 +371,7 @@ module.exports = function(webpackEnv) {
                 ),
                 
                 plugins: [
+                  ['import', { "libraryName": "antd", style: true }],
                   [
                     require.resolve('babel-plugin-named-asset-import'),
                     {
@@ -381,6 +382,7 @@ module.exports = function(webpackEnv) {
                         },
                       },
                     },
+                    
                   ],
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
@@ -484,6 +486,25 @@ module.exports = function(webpackEnv) {
                 },
                 'sass-loader'
               ),
+            },
+            {
+              test: /\.less$/,
+              use: [
+                  { loader: "style-loader" },
+                  { loader: "css-loader" },
+                  
+                  { 
+    
+                    loader: 'less-loader',
+                    options: {
+                      lessOptions: {
+                        javascriptEnabled: true,
+                        modifyVars: { '@primary-color': '#f9c700' },
+                      },
+                    }
+                    
+                  },
+              ]
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.
             // When you `import` an asset, you get its (virtual) filename.
