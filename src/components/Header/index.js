@@ -1,5 +1,5 @@
 import { Col, Row } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import "./index.less";
 import Util from "../../utils/util";
 //import axios from
@@ -47,7 +47,7 @@ export default class Header extends React.Component {
         <Row className="header-top">
           <Col span="24">
             <span>Welcome, {this.state.userName}</span>
-            {/* <a href="#">Exit</a> */}
+            <a href="#">Exit</a>
           </Col>
         </Row>
         <Row className="bread">
