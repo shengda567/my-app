@@ -2,7 +2,8 @@ import { Col, Row } from 'antd'
 import React from 'react'
 import './index.less'
 import Util from '../../utils/util'
-//import axios from 
+import axios from '../../axios'
+import '../../style/common.less'
 export default class Header extends React.Component {
     state = {}
     componentWillMount() {
@@ -14,12 +15,15 @@ export default class Header extends React.Component {
             this.setState({
                 sysTime
             })
-            //this.getWeatherAPIData();
+            this.getWeatherAPIData();
         }, 1000)
     }
-    // getWeatherAPIData() {
+    getWeatherAPIData() {
+        axios.jsonp({
+            url:"https://www.google.com/maps/search/?api=1&hoboken"
 
-    // }
+        })
+    }
     render() {
         return (
             <div className='header'>
@@ -31,12 +35,12 @@ export default class Header extends React.Component {
                     
                 </Row>
                 <Row className='bread'>
-                    <Col span='4' className='bread-title'>
-                        <span>Then main page</span>
+                    <Col span='2' className='bread-title'>
+                        <span>Main page</span>
                     </Col>
-                    <Col span='20' className='bread-weather'>
+                    <Col span='22' className='bread-weather'>
                         <sapn className='date'>{this.state.sysTime}</sapn>
-                        <span className='weather-details'>sunny</span>
+                        <span className='weather-details'>Cloudy</span>
                     </Col>
                 </Row>
             </div>
