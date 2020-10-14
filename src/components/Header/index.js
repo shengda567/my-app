@@ -52,7 +52,7 @@ export default class Header extends React.Component {
         </Row>
         <Row className="bread">
           <Col span="4" className="bread-title">
-            <span>Home Page</span>
+            <span>Home</span>
           </Col>
           <Col span="20" className="bread-weather">
             <span className="date">{this.state.sysTime}</span>

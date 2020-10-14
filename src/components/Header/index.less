@@ -18,7 +18,16 @@
          border-top: 2px solid #f9c700;
          .bread-title{
             text-align: center;
-            
+            font-size: @fontC;
+            &:after{
+                position: absolute;
+                content: '';
+                left:77px;
+                top:38px;
+                border-top: 9px solid @colorM;
+                border-left: 12px solid transparent;
+                border-right: 12px solid transparent;
+            }
          }
          .bread-weather{
              text-align: right;
