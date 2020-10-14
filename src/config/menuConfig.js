@@ -4,6 +4,20 @@ const menuList = [
         key: '/home'
     },
     {
+        title: 'Sign in/up',
+        key: '/login',
+        btnList: [
+            {
+                title: 'Sign in',
+                key: 'signin'
+            },
+            {
+                title: 'Sign up',
+                key: 'register'
+            }
+        ]
+    },
+    {
         title: 'City Management',
         key: '/city'
     },
