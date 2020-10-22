@@ -117,8 +117,9 @@ export default class FormRegister extends React.Component{
                             showTime
                             format="MM-DD-YYYY HH:mm:ss" />
                         </FormItem>
-                        <FormItem label="Address" initialValue ={"1 Castle Point,Hoboken,NJ 07030,US">
-                        <TextArea autosize={rowObject}/>
+
+                        <FormItem label="Address" initialValue ={'1 Castle Point,Hoboken,NJ 07030,US'}>
+                        <TextArea autosize={rowObject}/> 
                         </FormItem>
 
                         <FormItem label="Image" >
