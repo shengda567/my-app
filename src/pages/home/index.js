@@ -5,7 +5,7 @@ export default class Home extends React.Component{
     render() {
         return (
             <div className='home-wrap'>
-                welcome to the shared bike management system
+                Welcome to the Shared Bike Management System
             </div>
         )
     }

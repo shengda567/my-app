@@ -4,16 +4,16 @@ const menuList = [
         key: '/home'
     },
     {
-        title: 'Sign in/up',
-        key: '/login',
-        btnList: [
+        title: 'Log in',
+        key: '/form',
+        children: [
             {
                 title: 'Sign in',
-                key: 'signin'
+                key: '/form/login',
             },
             {
                 title: 'Sign up',
-                key: 'register'
+                key: '/form/register',
             }
         ]
     },
@@ -42,6 +42,24 @@ const menuList = [
     {
         title: 'Map',
         key: '/bikeMap'
+    },
+    {
+        title: 'Charts',
+        key: '/charts',
+        children: [
+            {
+                title: 'bar',
+                key: '/charts/bar'
+            },
+            {
+                title: 'pie',
+                key: '/charts/pie'
+            },
+            {
+                title: 'line',
+                key: '/charts/line'
+            },
+        ]
     },
 ];
 export default menuList;
