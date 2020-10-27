@@ -4,7 +4,9 @@ import App from "./App";
 import Admin from "./admin";
 import Home from "./pages/home";
 import City from "./pages/city/index";
-
+import Order from "./pages/order/index";
+import Common from "./common"
+import OrderDetail from './pages/order/detail'
 
 export default class IRouter extends React.Component {
   render() {
@@ -12,7 +14,7 @@ export default class IRouter extends React.Component {
       <HashRouter>
         <App>
           <Switch>
-            {/* <Route path="/login" component={Login} /> 
+            {/* <Route path="/login" component={Login} /> */}
             <Route
               path="/common"
               render={() => (
@@ -23,7 +25,7 @@ export default class IRouter extends React.Component {
                   />
                 </Common>
               )}
-            />*/}
+            />
             <Route
               path="/admin"
               render={() => (
@@ -31,6 +33,7 @@ export default class IRouter extends React.Component {
                   <Switch>
                     <Route path="/admin/home" component={Home} />
                     <Route path="/admin/city" component={City} />
+                    <Route path="/admin/order" component={Order} />
                     <Redirect to="/admin/home" />
                   </Switch>
                 </Admin>

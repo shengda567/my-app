@@ -2,6 +2,7 @@ import { Col, Row } from "antd";
 import React from "react";
 import "./index.less";
 import Util from "../../utils/utils";
+import Column from "antd/lib/table/Column";
 //import axios from
 export default class Header extends React.Component {
   state = {};
@@ -42,23 +43,34 @@ export default class Header extends React.Component {
       });
   }
   render() {
+    const menuType = this.props.menuType;
     return (
       <div className="header">
         <Row className="header-top">
-          <Col span="24">
+          {menuType?
+          <Col span="6" className="logo">
+            <img src="/assets/logo-ant.svg" alt=""/>
+            <span>Shared Bike Management System</span>
+          </Col>:''
+          }
+          <Col span={menuType?18:24}>
             <span>Welcome, {this.state.userName}</span>
             <a href="#">Exit</a>
           </Col>
         </Row>
-        <Row className="bread">
-          <Col span="4" className="bread-title">
-            <span>Home</span>
-          </Col>
-          <Col span="20" className="bread-weather">
-            <span className="date">{this.state.sysTime}</span>
-            <span className="weather-details">{this.state.weather}</span>
-          </Col>
-        </Row>
+        {menuType ? (
+          ""
+        ) : (
+          <Row className="bread">
+            <Col span="4" className="bread-title">
+              <span>Home</span>
+            </Col>
+            <Col span="20" className="bread-weather">
+              <span className="date">{this.state.sysTime}</span>
+              <span className="weather-details">{this.state.weather}</span>
+            </Col>
+          </Row>
+        )}
       </div>
     );
   }
