@@ -179,7 +179,7 @@ export default class Order extends React.Component {
         title: "Distance",
         dataIndex: "distance",
         render(distance) {
-          return distance + "mile";
+          return distance + " mile";
         },
       },
       {

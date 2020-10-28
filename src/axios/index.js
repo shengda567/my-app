@@ -27,7 +27,7 @@ export default class Axios {
       //loading.style.display = 'block';
     }
     let baseApi =
-      " https://www.easy-mock.com/mock/5f8788644dc90c6644514a80/bikemockapi";
+      "http://mock.jszhong.top/mock/5f99dc1302b6b25da6c3ae31/bikeapi";
     return new Promise((resolve, reject) => {
       axios({
         url: options.url,

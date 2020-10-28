@@ -5,32 +5,34 @@ import "./detail.less";
 export default class Order extends React.Component {
   state = {};
 
-  /*    componentDidMount(){
-        let orderId = this.props.match.params.orderId;
-        if(orderId){
-            this.getDetailInfo(orderId);
+  componentDidMount() {
+    let orderId = this.props.match.params.orderId;
+    if (orderId) {
+      this.getDetailInfo(orderId);
+    }
+  }
+
+  getDetailInfo = (orderId) => {
+    axios
+      .ajax({
+        url: "/order/detail",
+        data: {
+          params: {
+            orderId: orderId,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.code == 0) {
+          this.setState({
+            orderInfo: res.result,
+          });
+          //this.renderMap(res.result);
         }
-    }
+      });
+  };
 
-    getDetailInfo = (orderId)=>{
-        axios.ajax({
-            url:'/order/detail',
-            data:{
-                params:{
-                    orderId: orderId
-                }
-            }
-        }).then((res)=>{
-            if(res.code ==0){
-                this.setState({
-                    orderInfo:res.result
-                })
-                this.renderMap(res.result);
-            }
-        })
-    }
-
-     renderMap = (result)=>{
+  /*renderMap = (result)=>{
         this.map = new window.BMap.Map('orderDetailMap');
         // this.map.centerAndZoom('北京',11);
         // 添加地图控件
@@ -113,7 +115,7 @@ export default class Order extends React.Component {
   render() {
     const info = this.state.orderInfo || {};
     return (
-      <div style={{width:'calc(100vh)'}}>
+      <div style={{ width: "100%" }}>
         <Card>
           {/* <div id="orderDetailMap" className="order-map"></div> */}
           <div className="detail-items">
