@@ -22,7 +22,7 @@ export default class Axios {
         if (options.data && options.data.isShowLoading !== false){
             loading = document.getElementById('ajaxLoading');
         }
-        let baseApi = 'https://www.easy-mock.com/mock/5a7278e28d0c633b9c4adbd7/api';
+        let baseApi = 'http://mock.jszhong.top/mock/5f99dc1302b6b25da6c3ae31/bikeapi';
         return new Promise((resolve,reject)=>{
             axios({
                 url:options.url,

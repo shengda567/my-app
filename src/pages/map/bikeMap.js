@@ -22,7 +22,7 @@ export default class Order extends React.Component{
             field: 'order_status',
             placeholder: 'All',
             initialValue: '0',
-            width: 150,
+            width: 500,
             list: [{id: '0', name: 'All'}, {id: '1', name: 'In process'}, {id: '3', name: 'End route'}]
         }
     ]
