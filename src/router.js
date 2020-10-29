@@ -8,6 +8,7 @@ import Register from "./pages/form/register";
 import Bar from "./pages/echarts/bar/index";
 import Line from "./pages/echarts/line/index";
 import Pie from "./pages/echarts/pie/index";
+import BikeMap from "./pages/map/bikeMap";
 
 
 export default class IRouter extends React.Component {
@@ -39,6 +40,7 @@ export default class IRouter extends React.Component {
                     <Route path="/charts/bar" component={Bar} />
                     <Route path="/charts/line" component={Line} />
                     <Route path="/charts/pie" component={Pie} />
+                    <Route path="/bikeMap" component={BikeMap}/>
                     <Redirect to="/home" />
                   </Switch>
                 </Admin>

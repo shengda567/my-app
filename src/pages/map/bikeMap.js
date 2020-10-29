@@ -13,17 +13,17 @@ export default class Order extends React.Component{
     // 表单封装，通过构建表单对象，在BaseForm中进行统一渲染
     formList = [
         {
-            type: '城市'
+            type: 'City'
         }, {
-            type: '时间查询'
+            type: 'Time_search'
         }, {
             type: 'SELECT',
-            label: '订单状态',
+            label: 'Order Status',
             field: 'order_status',
-            placeholder: '全部',
+            placeholder: 'All',
             initialValue: '0',
             width: 150,
-            list: [{id: '0', name: '全部'}, {id: '1', name: '进行中'}, {id: '3', name: '行程结束'}]
+            list: [{id: '0', name: 'All'}, {id: '1', name: 'In process'}, {id: '3', name: 'End route'}]
         }
     ]
 
@@ -154,7 +154,7 @@ export default class Order extends React.Component{
                     <BaseForm formList={this.formList} filterSubmit={this.handleFilterSubmit}/>
                 </Card>
                 <Card style={{marginTop:10}}>
-                    <div>共{this.state.total_count}辆车</div>
+                    <div>Total numeber of bikes: {this.state.total_count}</div>
                     <div id="container" style={{height:500}}></div>
                 </Card>
             </div>

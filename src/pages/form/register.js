@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card,Form,Button,Input,Checkbox,Radio,Select,Switch,DatePicker,TimePicker,Upload,Icon,message, InputNumber} from 'antd'
+import {Card,Form,Button,Input,Checkbox,Radio,Select,Switch,DatePicker,Upload,Icon,message, InputNumber} from 'antd'
 import moment from 'moment';
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -60,8 +60,8 @@ export default class FormRegister extends React.Component{
         }
         return (
             <div>
-                <Card title="Register">
-                    <Form layout="horizontal" style = {{width: "800"}}>
+                <Card title="Register" style={{ width: 500 }}>
+                    <Form layout="horizontal">
                         <FormItem label="Username" 
                         rules = {[
                             {
@@ -84,8 +84,7 @@ export default class FormRegister extends React.Component{
                         </FormItem>
 
                         <FormItem 
-                        label="Age" 
-                        initialValue="18">
+                        label="Age" >
                         <InputNumber  />
                         </FormItem>
 
@@ -109,16 +108,17 @@ export default class FormRegister extends React.Component{
                         </Select>
                         </FormItem>
 
-                        <FormItem label="Marriage"initialValue ="true" valuePropName ='checked'>
+                        <FormItem label="Marriage" valuePropName ='checked'>
                         <Switch/>
                         </FormItem>
-                        <FormItem label="Birthday" initialValue= {moment('1900-08-08')}>
+
+                        <FormItem label="Birthday" >
                         <DatePicker
                             showTime
-                            format="MM-DD-YYYY HH:mm:ss" />
+                            format="MM-DD-YYYY" />
                         </FormItem>
 
-                        <FormItem label="Address" initialValue ={'1 Castle Point,Hoboken,NJ 07030,US'}>
+                        <FormItem label="Address" >
                         <TextArea autosize={rowObject}/> 
                         </FormItem>
 

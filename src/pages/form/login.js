@@ -3,10 +3,14 @@ import { Card, Form, Input, Button, message, Icon, Checkbox } from "antd";
 const FormItem = Form.Item;
 export default class FormLogin extends React.Component{
 
+
     handleSubmit = ()=>{
-        const onFinish = values => {
-            console.log('Received values of form: ', values);
-        }
+        let userInfo = this.props.form.getFieldsValue();
+        this.props.form.validateFields((err,values)=>{
+            if(!err){
+                message.success(` Congrats, you have logged in.`)
+            }
+        })
     }
        
     render(){
