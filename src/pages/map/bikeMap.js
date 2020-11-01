@@ -34,7 +34,7 @@ export default class Order extends React.Component{
     // 列表请求
     requestList = ()=>{
         axios.ajax({
-            url:'/map/bike_list',
+            url:'/bikemap',
             data:{
                 params:this.params
             }
@@ -45,7 +45,8 @@ export default class Order extends React.Component{
                 },()=>{
                     
                 })
-                this.renderMap(res.result);
+                console.log(res.route_list);
+                //this.renderMap(res.result);
             }
         })
     }

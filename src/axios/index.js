@@ -33,7 +33,6 @@ export default class Axios {
             }).then((response)=>{
                 if (options.data && options.data.isShowLoading !== false) {
                     loading = document.getElementById('ajaxLoading');
-                    loading.style.display = 'none';
                 }
                 if (response.status == '200'){
                     let res = response.data;
