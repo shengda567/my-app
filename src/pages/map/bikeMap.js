@@ -45,8 +45,7 @@ export default class Order extends React.Component{
                 },()=>{
                     
                 })
-                console.log(res.route_list);
-                //this.renderMap(res.result);
+                this.renderMap(res.result);
             }
         })
     }
