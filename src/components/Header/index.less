@@ -1,39 +1,65 @@
- @import '../../style/default.less';
- 
- .header{
-     background-color: @colorM;
-     .header-top{
-         height: 60px;
-         line-height: 60px;
-         padding: 0 20px;
-         text-align: right;
-         a{
-            margin-left: 40px;
-        }
-     }
-     .bread{
-         height: 40px;
-         line-height: 40px;
-         padding: 0 20px;
-         border-top: 1px solid #f9c700;
-         .bread-title{
-            text-align: center;
-            
-         }
-         .bread-weather{
-             text-align: right;
-             font-size: 14px;;
-             .date{
-                margin-right: 10px;
-                vertical-align: middle;
+@import "../../style/default.less";
 
-            }
-            .weather-details {
-                margin-right: 10px;
-                vertical-align: middle;
-            }
-         }
-         
-     }
-     
- }
+.header {
+  background-color: @colorM;
+  width : calc(100%);
+  .header-top {
+    height: 60px;
+    line-height: 60px;
+    padding: 0 20px;
+    text-align: right;
+    .logo{
+        line-height: 60px;
+        text-align: left;
+        font-size: 18px;
+        img{
+            height: 40px;
+            vertical-align: middle;
+        }
+        span{
+            margin-left: 5px;
+        }
+    }
+    a {
+      margin-left: 40px;
+    }
+  }
+  .bread {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    border-top: 2px solid #f9c700;
+    .bread-title {
+      text-align: center;
+      font-size: @fontC;
+      &:after {
+        position: absolute;
+        content: "";
+        left: 77px;
+        top: 38px;
+        border-top: 9px solid @colorM;
+        border-left: 12px solid transparent;
+        border-right: 12px solid transparent;
+      }
+    }
+    .bread-weather {
+      text-align: right;
+      font-size: 15px;
+      .date {
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+      .weather-details {
+        margin-right: 10px;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+.simple-page {
+  .header-top {
+    background: #1890ff;
+    color: @colorM;
+  }
+}
