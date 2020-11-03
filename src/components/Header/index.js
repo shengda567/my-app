@@ -35,7 +35,7 @@ export default class Header extends React.Component {
                         <span>Then main page</span>
                     </Col>
                     <Col span='20' className='bread-weather'>
-                        <sapn className='date'>{this.state.sysTime}</sapn>
+                        <span className='date'>{this.state.sysTime}</span>
                         <span className='weather-details'>sunny</span>
                     </Col>
                 </Row>
