@@ -5,7 +5,8 @@ export default class Footer extends React.Component {
     render() {
         return (
             <div className='footer'>
-                Copyright belongs to SSW 695A Shared Bike Project
+                <p>SSW 695A Shared Bike Project</p>
+                <p>Credit: Boyang Guo, Shengda Zhang, Jia Wen, Shihao Miao</p> 
             </div>
         );
 

@@ -1,6 +1,9 @@
 import React from "react";
 import { Card, Button, Table, Form, Select, Modal, message } from "antd";
 import axios from "./../../axios/index";
+
+import Axios from 'axios'
+
 import Utils from "./../../utils/utils";
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -15,29 +18,41 @@ export default class City extends React.Component {
   };
   componentDidMount() {
     this.requestList();
+
+    this.getData();
   }
-  requestList = () => {
-    let _this = this;
-    axios
-      .ajax({
-        url: "/open_city",
-        data: {
-          params: {
-            page: this.params.page,
-          },
-        },
-      })
+
+  getData = async() => {
+    const data = await Axios.get('http://localhost:3001/city')
+    console.log(data)
+  }
+
+  requestList = async() => {
+    //let _this = this;
+    // axios
+    //   .ajax({
+    //     url: "/city",
+    //     data: {
+    //       params: {
+      
+    //       },
+    //     },
+    //   })
+      await Axios.get('http://localhost:3001/city')
       .then((res) => {
-        let list = res.result.item_list.map((item, index) => {
+        let list = res.data.map((item, index) => {
+
           item.key = index;
           return item;
         });
         this.setState({
           list: list,
-          pagination: Utils.pagination(res, (current) => {
-            _this.params.page = current;
-            _this.requestList();
-          }),
+
+          // pagination: Utils.pagination(res, (current) => {
+          //   _this.params.page = current;
+          //   _this.requestList();
+          // }),
+
         });
       });
   };
@@ -46,11 +61,38 @@ export default class City extends React.Component {
       isShowActivateCity: true,
     });
   };
+
+  search = async(city_name, mode, op_mode, franchisee_name ) => {
+    await Axios.post('http://localhost:3001/city', {
+      "city_name": city_name,
+      "mode": parseInt(mode),
+      "op_mode": parseInt(op_mode),
+      "franchisee_name": franchisee_name
+    })
+    .then((res) => {
+      console.log(res);
+      let list = res.data.map((item, index) => {
+        item.key = index;
+        return item;
+      });
+      this.setState({
+        list: list,
+        // pagination: Utils.pagination(res, (current) => {
+        //   _this.params.page = current;
+        //   _this.requestList();
+        // }),
+      });
+    });
+  }
+
+
   render() {
     const columns = [
       {
         title: "City ID",
-        dataIndex: "id",
+
+        dataIndex: "_id",
+
       },
       {
         title: "City Name",
@@ -102,7 +144,9 @@ export default class City extends React.Component {
     return (
       <div>
         <Card>
-          <FilterForm />
+
+          <FilterForm search={this.search.bind(this)}/>
+
         </Card>
         <Card style={{ marginTop: 10 }}>
           <Button type="primary" onClick={this.handleActivateCity}>
@@ -139,40 +183,70 @@ export default class City extends React.Component {
 }
 
 class FilterForm extends React.Component {
+
+  
+  handleSubmit = () => {
+    let formInfo = this.props.form.getFieldsValue();
+    console.log(JSON.stringify(formInfo));
+    this.props.search(formInfo.city_name, formInfo.us_mode, formInfo.op_mode, formInfo.franchisee_name);
+  }
+
+
   render() {
+    const { getFieldDecorator } = this.props.form;
     return (
       <Form layout="inline">
-        <FormItem label="City" name="city_id">
-          <Select style={{ width: 100 }} placeholder="All">
-            <Option value="">All</Option>
-            <Option value="1">Hoboken</Option>
-            <Option value="2">Jersey City</Option>
-            <Option value="3">New York</Option>
-          </Select>
+        <FormItem label="City" name="city_name">
+            {
+              getFieldDecorator('city_name')(
+              
+              <Select style={{ width: 100 }} placeholder="All">
+              <Option value="">All</Option>
+              <Option value="Hoboken">Hoboken</Option>
+              <Option value="Jersey City">Jersey City</Option>
+              <Option value="New York">New York</Option>
+            </Select>)
+
+              }
         </FormItem>
         <FormItem label="Usage Mode" name="us_mode">
-          <Select style={{ width: 220 }} placeholder="All">
+          {
+            getFieldDecorator('us_mode')(
+            <Select style={{ width: 220 }} placeholder="All">
             <Option value="">All</Option>
             <Option value="1">Designated Parking Zone</Option>
             <Option value="2">No Parking Zone</Option>
-          </Select>
+          </Select>)
+          }
+          
         </FormItem>
         <FormItem label="Business Mode" name="op_mode">
-          <Select style={{ width: 140 }} placeholder="All">
-            <Option value="">All</Option>
-            <Option value="1">Self-operating</Option>
-            <Option value="2">Franchised</Option>
-          </Select>
+          {
+            getFieldDecorator('op_mode')(
+              <Select style={{ width: 140 }} placeholder="All">
+                <Option value="">All</Option>
+                <Option value="1">Self-operating</Option>
+                <Option value="2">Franchised</Option>
+              </Select>
+            )
+          }
+          
         </FormItem>
         <FormItem label="Franchisee authorization status" name="auth_status">
-          <Select style={{ width: 140 }} placeholder="All">
-            <Option value="">All</Option>
-            <Option value="1">Authorized</Option>
-            <Option value="2">Unauthorized</Option>
-          </Select>
+          {
+            getFieldDecorator('franchisee_name')(
+              <Select style={{ width: 140 }} placeholder="All">
+                <Option value="">All</Option>
+                <Option value="Lime1">Lime1</Option>
+                <Option value="Lime2">Lime2</Option>
+              </Select>
+            )
+          }
+           
         </FormItem>
         <FormItem>
-          <Button type="primary" style={{ margin: "0 20px" }}>
+          <Button type="primary" onClick={this.handleSubmit} style={{ margin: "0 20px" }}>
+
             Search
           </Button>
           <Button>Reset</Button>
@@ -181,6 +255,9 @@ class FilterForm extends React.Component {
     );
   }
 }
+
+FilterForm = Form.create({})(FilterForm);
+
 
 class ActivateCityForm extends React.Component {
   render() {

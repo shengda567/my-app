@@ -1,5 +1,6 @@
 const menuList = [
     {
+
         title: 'Main page',
         key: '/home'
     },
@@ -17,49 +18,61 @@ const menuList = [
             }
         ]
     },
+    
     {
-        title: 'City Management',
-        key: '/city'
+        title: 'Cities',
+        key: '/admin/city'
     },
     {
-        title: 'Order Management',
-        key: '/order',
+        title: 'Orders',
+        key: '/admin/order',
+
         btnList: [
             {
                 title: 'Order details',
                 key: 'detail'
             },
             {
-                title: 'Ended orders',
+
+                title: 'Completed orders',
+
                 key: 'finish'
             }
         ]
     },
     {
-        title: 'Employee management',
-        key: '/user'
+        title: 'Employees',
+        key: '/admin/user'
     },
     {
         title: 'Map',
-        key: '/bikeMap'
+        key: '/admin/bikeMap'
     },
     {
         title: 'Charts',
+
         key: '/charts',
+
         children: [
             {
-                title: 'bar',
-                key: '/charts/bar'
+                title: 'Bar',
+                key: '/admin/charts/bar'
             },
             {
-                title: 'pie',
-                key: '/charts/pie'
+                title: 'Pie',
+                key: '/admin/charts/pie'
             },
             {
-                title: 'line',
-                key: '/charts/line'
+                title: 'Line',
+                key: '/admin/charts/line'
             },
         ]
     },
+
+    /*{
+        title: 'permission',
+        key: '/admin/permission'
+    },*/
+
 ];
 export default menuList;

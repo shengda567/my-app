@@ -1,37 +1,40 @@
-import React from 'react';
-import { Card } from 'antd'
-import axios from '../../axios'
-import './detail.less'
+
+import React from "react";
+import { Card } from "antd";
+import axios from "../../axios";
+import "./detail.less";
 export default class Order extends React.Component {
+  state = {};
 
-    state = {}
+  componentDidMount() {
+    let orderId = this.props.match.params.orderId;
+    if (orderId) {
+      this.getDetailInfo(orderId);
+    }
+  }
 
-    componentDidMount(){
-        let orderId = this.props.match.params.orderId;
-        if(orderId){
-            this.getDetailInfo(orderId);
+  getDetailInfo = (orderId) => {
+    axios
+      .ajax({
+        url: "/order/detail",
+        data: {
+          params: {
+            orderId: orderId,
+          },
+        },
+      })
+      .then((res) => {
+        if (res.code == 0) {
+          this.setState({
+            orderInfo: res.result,
+          });
+          //this.renderMap(res.result);
         }
-    }
+      });
+  };
 
-    getDetailInfo = (orderId)=>{
-        axios.ajax({
-            url:'/order/detail',
-            data:{
-                params:{
-                    orderId: orderId
-                }
-            }
-        }).then((res)=>{
-            if(res.code ==0){
-                this.setState({
-                    orderInfo:res.result
-                })
-                this.renderMap(res.result);
-            }
-        })
-    }
+  /*renderMap = (result)=>{
 
-    renderMap = (result)=>{
         this.map = new window.BMap.Map('orderDetailMap');
         // this.map.centerAndZoom('北京',11);
         // 添加地图控件
@@ -109,6 +112,7 @@ export default class Order extends React.Component {
             fillOpacity:0.4
         })
         this.map.addOverlay(polygon);
+
     }
 
     render(){
@@ -164,3 +168,64 @@ export default class Order extends React.Component {
         );
     }
 }
+
+    } */
+
+  render() {
+    const info = this.state.orderInfo || {};
+    return (
+      <div style={{ width: "100%" }}>
+        <Card>
+          {/* <div id="orderDetailMap" className="order-map"></div> */}
+          <div className="detail-items">
+            <div className="item-title">Order Info</div>
+            <ul className="detail-form">
+              <li>
+                <div className="detail-form-left">Usage Mode</div>
+                <div className="detail-form-content">
+                  {info.mode == 1
+                    ? "Designated Parking Zone"
+                    : "No Parking Zone"}
+                </div>
+              </li>
+              <li>
+                <div className="detail-form-left">Order Number</div>
+                <div className="detail-form-content">{info.order_sn}</div>
+              </li>
+              <li>
+                <div className="detail-form-left">Bike Number</div>
+                <div className="detail-form-content">{info.bike_sn}</div>
+              </li>
+              <li>
+                <div className="detail-form-left">User Name</div>
+                <div className="detail-form-content">{info.user_name}</div>
+              </li>
+              <li>
+                <div className="detail-form-left">Phone Number</div>
+                <div className="detail-form-content">{info.mobile}</div>
+              </li>
+            </ul>
+          </div>
+          <div className="detail-items">
+            <div className="item-title">Route</div>
+            <ul className="detail-form">
+              <li>
+                <div className="detail-form-left">Start</div>
+                <div className="detail-form-content">{info.start_location}</div>
+              </li>
+              <li>
+                <div className="detail-form-left">End</div>
+                <div className="detail-form-content">{info.end_location}</div>
+              </li>
+              <li>
+                <div className="detail-form-left">Distance</div>
+                <div className="detail-form-content">{info.distance}Mile</div>
+              </li>
+            </ul>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+}
+
