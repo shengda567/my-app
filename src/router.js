@@ -1,5 +1,4 @@
 import React from "react";
-
 import { HashRouter, Route, Switch, Redirect} from "react-router-dom";
 import App from "./App";
 import Admin from "./admin";
@@ -10,9 +9,6 @@ import Bar from "./pages/echarts/bar/index";
 import Line from "./pages/echarts/line/index";
 import Pie from "./pages/echarts/pie/index";
 import BikeMap from "./pages/map/bikeMap";
-
-
-
 import City from "./pages/city/index";
 import Order from "./pages/order/index";
 import Common from "./common"
@@ -25,21 +21,6 @@ export default class IRouter extends React.Component {
       <HashRouter>
         <App>
           <Switch>
-
-            {/* <Route path="/login" component={Login} /> */}
-
-            {/*<Route
-              path="/common"
-              render={() => (
-                <Common>
-                  <Route
-                    path="/common/order/detail/:orderId"
-                    component={OrderDetail}
-                  />
-                </Common>
-              )}
-
-            />*/}
             <Route
               path="/"
               render={() => (
@@ -55,7 +36,6 @@ export default class IRouter extends React.Component {
                     <Route path="/city" component={City} />
                     <Route path="/order" component={Order} />
                     <Redirect to="/home" />
-
                   </Switch>
                 </Admin>
               )}
