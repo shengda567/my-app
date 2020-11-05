@@ -11,6 +11,7 @@ import Pie from "./pages/echarts/pie/index";
 import BikeMap from "./pages/map/bikeMap";
 import City from "./pages/city/index";
 import Order from "./pages/order/index";
+import Employee from "./pages/user/index";
 import Common from "./common"
 import OrderDetail from './pages/order/detail'
 
@@ -35,6 +36,7 @@ export default class IRouter extends React.Component {
                     <Route path="/bikeMap" component={BikeMap}/>
                     <Route path="/city" component={City} />
                     <Route path="/order" component={Order} />
+                    <Route path="/user" component={Employee}/>
                     <Redirect to="/home" />
                   </Switch>
                 </Admin>
