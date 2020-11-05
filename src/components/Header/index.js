@@ -1,9 +1,11 @@
+
 import { Col, Row } from "antd";
 import React from "react";
 import "./index.less";
 import Util from "../../utils/utils";
 import Column from "antd/lib/table/Column";
 //import axios from
+
 export default class Header extends React.Component {
   state = {};
   componentWillMount() {
@@ -35,7 +37,8 @@ export default class Header extends React.Component {
         console.log(response);
         let data = response.weather[0];
         this.setState({
-          weather: data.main,
+
+        weather: data.main,
         });
       })
       .catch((err) => {
@@ -75,3 +78,4 @@ export default class Header extends React.Component {
     );
   }
 }
+
