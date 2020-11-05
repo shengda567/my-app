@@ -145,7 +145,7 @@ export default class City extends React.Component {
       <div>
         <Card>
 
-          <FilterForm search={this.search.bind(this)}/>
+          <FilterForm onRef={this.onRef} search={this.search}/>
 
         </Card>
         <Card style={{ marginTop: 10 }}>
@@ -183,65 +183,61 @@ export default class City extends React.Component {
 }
 
 class FilterForm extends React.Component {
-
+  
   
   handleSubmit = () => {
-    let formInfo = this.props.form.getFieldsValue();
+    let formInfo = this.refs.addForm.getFieldsValue();
     console.log(JSON.stringify(formInfo));
     this.props.search(formInfo.city_name, formInfo.us_mode, formInfo.op_mode, formInfo.franchisee_name);
   }
 
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    //const { getFieldDecorator } = this.props.form;
     return (
-      <Form layout="inline">
+      <Form layout="inline" ref='addForm'>
         <FormItem label="City" name="city_name">
-            {
-              getFieldDecorator('city_name')(
+            
               
-              <Select style={{ width: 100 }} placeholder="All">
+              
+            <Select style={{ width: 100 }} placeholder="All">
               <Option value="">All</Option>
               <Option value="Hoboken">Hoboken</Option>
               <Option value="Jersey City">Jersey City</Option>
               <Option value="New York">New York</Option>
-            </Select>)
+            </Select>
 
-              }
+              
         </FormItem>
         <FormItem label="Usage Mode" name="us_mode">
-          {
-            getFieldDecorator('us_mode')(
-            <Select style={{ width: 220 }} placeholder="All">
+          
+          
+          <Select style={{ width: 220 }} placeholder="All">
             <Option value="">All</Option>
             <Option value="1">Designated Parking Zone</Option>
             <Option value="2">No Parking Zone</Option>
-          </Select>)
-          }
+          </Select>
+          
           
         </FormItem>
         <FormItem label="Business Mode" name="op_mode">
-          {
-            getFieldDecorator('op_mode')(
+          
               <Select style={{ width: 140 }} placeholder="All">
                 <Option value="">All</Option>
                 <Option value="1">Self-operating</Option>
                 <Option value="2">Franchised</Option>
               </Select>
-            )
-          }
+            
           
         </FormItem>
-        <FormItem label="Franchisee authorization status" name="auth_status">
-          {
-            getFieldDecorator('franchisee_name')(
+        <FormItem label="Franchisee authorization status" name="franchisee_name">
+          
               <Select style={{ width: 140 }} placeholder="All">
                 <Option value="">All</Option>
                 <Option value="Lime1">Lime1</Option>
                 <Option value="Lime2">Lime2</Option>
               </Select>
-            )
-          }
+            
            
         </FormItem>
         <FormItem>
@@ -256,7 +252,6 @@ class FilterForm extends React.Component {
   }
 }
 
-FilterForm = Form.create({})(FilterForm);
 
 
 class ActivateCityForm extends React.Component {

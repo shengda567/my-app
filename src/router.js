@@ -28,7 +28,7 @@ export default class IRouter extends React.Component {
 
             {/* <Route path="/login" component={Login} /> */}
 
-            <Route
+            {/*<Route
               path="/common"
               render={() => (
                 <Common>

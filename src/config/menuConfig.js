@@ -21,11 +21,11 @@ const menuList = [
     
     {
         title: 'Cities',
-        key: '/admin/city'
+        key: '/city'
     },
     {
         title: 'Orders',
-        key: '/admin/order',
+        key: '/order',
 
         btnList: [
             {
@@ -42,11 +42,11 @@ const menuList = [
     },
     {
         title: 'Employees',
-        key: '/admin/user'
+        key: '/user'
     },
     {
         title: 'Map',
-        key: '/admin/bikeMap'
+        key: '/bikeMap'
     },
     {
         title: 'Charts',
@@ -56,15 +56,15 @@ const menuList = [
         children: [
             {
                 title: 'Bar',
-                key: '/admin/charts/bar'
+                key: '/charts/bar'
             },
             {
                 title: 'Pie',
-                key: '/admin/charts/pie'
+                key: '/charts/pie'
             },
             {
                 title: 'Line',
-                key: '/admin/charts/line'
+                key: '/charts/line'
             },
         ]
     },
