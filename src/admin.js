@@ -5,7 +5,6 @@ import Footer from "./components/Footer";
 import NavLeft from "./components/NavLeft";
 import "./style/common.less";
 export default class Admin extends React.Component {
-  console.log('123');
   render() {
     return (
       <Row className="container">
