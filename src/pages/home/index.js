@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.less";
-
+import { connect } from "react-redux";
 
 export default class Home extends React.Component {
   render() {
@@ -11,4 +11,3 @@ export default class Home extends React.Component {
     );
   }
 }
-

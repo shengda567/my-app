@@ -1,4 +1,3 @@
-
 import { Col, Row } from "antd";
 import React from "react";
 import "./index.less";
@@ -37,8 +36,7 @@ export default class Header extends React.Component {
         console.log(response);
         let data = response.weather[0];
         this.setState({
-
-        weather: data.main,
+          weather: data.main,
         });
       })
       .catch((err) => {
@@ -50,15 +48,17 @@ export default class Header extends React.Component {
     return (
       <div className="header">
         <Row className="header-top">
-          {menuType?
-          <Col span="6" className="logo">
-            <img src="/assets/logo-ant.svg" alt=""/>
-            <span>Shared Bike Management System</span>
-          </Col>:''
-          }
-          <Col span={menuType?18:24}>
+          {menuType ? (
+            <Col span="6" className="logo">
+              <img src="/assets/logo-ant.svg" alt="" />
+              <span>Shared Bike Management System</span>
+            </Col>
+          ) : (
+            ""
+          )}
+          <Col span={menuType ? 18 : 24}>
             <span>Welcome, {this.state.userName}</span>
-            <a href="#">Exit</a>
+            <a href="/">Exit</a>
           </Col>
         </Row>
         {menuType ? (
@@ -78,4 +78,3 @@ export default class Header extends React.Component {
     );
   }
 }
-
