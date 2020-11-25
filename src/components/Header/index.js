@@ -4,6 +4,7 @@ import "./index.less";
 import Util from "../../utils/utils";
 import Column from "antd/lib/table/Column";
 //import axios from
+
 export default class Header extends React.Component {
   state = {};
   componentWillMount() {
@@ -47,15 +48,17 @@ export default class Header extends React.Component {
     return (
       <div className="header">
         <Row className="header-top">
-          {menuType?
-          <Col span="6" className="logo">
-            <img src="/assets/logo-ant.svg" alt=""/>
-            <span>Shared Bike Management System</span>
-          </Col>:''
-          }
-          <Col span={menuType?18:24}>
+          {menuType ? (
+            <Col span="6" className="logo">
+              <img src="/assets/logo-ant.svg" alt="" />
+              <span>Shared Bike Management System</span>
+            </Col>
+          ) : (
+            ""
+          )}
+          <Col span={menuType ? 18 : 24}>
             <span>Welcome, {this.state.userName}</span>
-            <a href="#">Exit</a>
+            <a href="/">Exit</a>
           </Col>
         </Row>
         {menuType ? (
