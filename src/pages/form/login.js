@@ -18,7 +18,17 @@ class FormLogin extends React.Component {
     let userInfo = this.refs.userForm.getFieldsValue();
     console.log(JSON.stringify(userInfo));
 
-    await this.searchUser(userInfo.username, userInfo.password);
+    await this.searchUser(userInfo.username, userInfo.password)
+      .then((res) => {
+        message.success(
+          `${userInfo.username} Congrats, you have successfully registered!`
+        );
+      })
+      .catch((e) => {
+        message.error(
+          `Sorry, you do not login successfully, username or password may not be correct!`
+        );
+      });
     // this.props.form.validateFields((err, values) => {
     //   if (!err) {
     //     message.success(` Congrats, you have logged in.`);
