@@ -1,6 +1,8 @@
 import React from "react";
 
+
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
+
 import App from "./App";
 import Admin from "./admin";
 import Home from "./pages/home";
@@ -11,15 +13,20 @@ import Line from "./pages/echarts/line/index";
 import Pie from "./pages/echarts/pie/index";
 import BikeMap from "./pages/map/bikeMap";
 
+
+
+import Employee from "./pages/user/index";
 import City from "./pages/city/index";
 import Order from "./pages/order/index";
 import Common from "./common";
 import OrderDetail from "./pages/order/detail";
 import { connect } from "react-redux";
 
+
 class IRouter extends React.Component {
   state = {};
   render() {
+
     console.log(this.props.userinfo);
     if (this.props.userinfo) {
       return (
@@ -99,6 +106,7 @@ class IRouter extends React.Component {
         </HashRouter>
       );
     }
+
   }
 }
 const userStateToProps = (state) => {

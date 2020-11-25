@@ -1,0 +1,96 @@
+{
+  "code": 0,
+  "result": {
+    "bikelist":[{
+            type: 'FeatureCollection',
+            features: [{
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.023733, 40.745183]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: 'Howe Center Lot'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.027554, 40.734979]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: 'Hoboken Terminal'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.033787, 40.741748]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: 'Hoboken University Medical Center'
+              }
+            },            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.042781,40.741527]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: '2nd Street Light Rail Staion'
+              }
+            },
+                        {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.033811, 40.727030]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: 'Newport Path Station'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.042737,40.719553]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: 'Grove Street Path Station'
+              }
+            },
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.052860, 40.719185]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: '99 Ranch Market'
+              }
+            },
+                        {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: [-74.035943,40.732875]
+              },
+              properties: {
+                title: 'Bike loaction',
+                description: 'Target'
+              }
+            }]
+          };
+          ]
+  }
+}
