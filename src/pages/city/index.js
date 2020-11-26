@@ -18,8 +18,6 @@ export default class City extends React.Component {
   };
   componentDidMount() {
     this.requestList();
-
-
     this.getData();
   }
 
@@ -51,7 +49,6 @@ export default class City extends React.Component {
         //   _this.params.page = current;
         //   _this.requestList();
         // }),
-
       });
     });
   };
@@ -59,6 +56,27 @@ export default class City extends React.Component {
     this.setState({
       isShowActivateCity: true,
     });
+  };
+
+  handleSubmit = () => {
+    let cityInfo = this.cityForm.props.form.getFieldsValue();
+    console.log(cityInfo);
+    axios
+      .ajax({
+        url: "/city/open",
+        data: {
+          params: cityInfo,
+        },
+      })
+      .then((res) => {
+        if (res.code == "0") {
+          message.success("开通成功");
+          this.setState({
+            isShowOpenCity: false,
+          });
+          this.requestList();
+        }
+      });
   };
 
   search = async (city_name, mode, op_mode, franchisee_name) => {
@@ -83,15 +101,12 @@ export default class City extends React.Component {
     });
   };
 
-
   render() {
     const columns = [
       {
         title: "City ID",
 
-
         dataIndex: "_id",
-
       },
       {
         title: "City Name",
@@ -143,9 +158,7 @@ export default class City extends React.Component {
     return (
       <div>
         <Card>
-
           <FilterForm onRef={this.onRef} search={this.search} />
-
         </Card>
         <Card style={{ marginTop: 10 }}>
           <Button type="primary" onClick={this.handleActivateCity}>
@@ -182,7 +195,6 @@ export default class City extends React.Component {
 }
 
 class FilterForm extends React.Component {
-
   handleSubmit = () => {
     let formInfo = this.refs.addForm.getFieldsValue();
     console.log(JSON.stringify(formInfo));
@@ -194,10 +206,8 @@ class FilterForm extends React.Component {
     );
   };
 
-
   render() {
     return (
-
       <Form layout="inline" ref="addForm">
         <FormItem label="City" name="city_name">
           <Select style={{ width: 100 }} placeholder="All">
@@ -205,7 +215,6 @@ class FilterForm extends React.Component {
             <Option value="Hoboken">Hoboken</Option>
             <Option value="Jersey City">Jersey City</Option>
             <Option value="New York">New York</Option>
-
           </Select>
         </FormItem>
         <FormItem label="Usage Mode" name="us_mode">
@@ -239,7 +248,6 @@ class FilterForm extends React.Component {
             onClick={this.handleSubmit}
             style={{ margin: "0 20px" }}
           >
-
             Search
           </Button>
           <Button>Reset</Button>

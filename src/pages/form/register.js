@@ -133,8 +133,8 @@ export default class FormRegister extends React.Component {
 
             <FormItem label="Sex" initialValue="1" name="gender">
               <RadioGroup>
-                <Radio value="1">Male</Radio>
-                <Radio value="2">Female</Radio>
+                <Radio value="male">Male</Radio>
+                <Radio value="female">Female</Radio>
               </RadioGroup>
             </FormItem>
 
@@ -142,23 +142,23 @@ export default class FormRegister extends React.Component {
               <InputNumber />
             </FormItem>
 
-            <FormItem label="Status" name="status" initialValue="2">
+            <FormItem label="Status" name="status" initialValue="Manager">
               <Select>
-                <Option value="1">Manager</Option>
-                <Option value="2">Emplyoee</Option>
-                <Option value="3">Administrator</Option>
-                <Option value="4">Entrepreneur</Option>
+                <Option value="Manager">Manager</Option>
+                <Option value="Emplyoee">Emplyoee</Option>
+                <Option value="Administrator">Administrator</Option>
+                <Option value="Entrepreneur">Entrepreneur</Option>
               </Select>
             </FormItem>
 
-            <FormItem label="Hobby" name="hobby" initialValue="2">
+            <FormItem label="Hobby" name="hobby" initialValue="Swimming">
               <Select mode="multiple">
-                <Option value="1">Swimming</Option>
-                <Option value="2">Basketball</Option>
-                <Option value="3">Footbal</Option>
-                <Option value="4">Running</Option>
-                <Option value="5">Climbing</Option>
-                <Option value="6">Cycling</Option>
+                <Option value="Swimming">Swimming</Option>
+                <Option value="Basketball">Basketball</Option>
+                <Option value="Footbal">Footbal</Option>
+                <Option value="Running">Running</Option>
+                <Option value="Climbing">Climbing</Option>
+                <Option value="Cycling">Cycling</Option>
               </Select>
             </FormItem>
 

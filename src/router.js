@@ -1,6 +1,5 @@
 import React from "react";
 
-
 import { HashRouter, Route, Switch, Redirect } from "react-router-dom";
 
 import App from "./App";
@@ -12,8 +11,7 @@ import Bar from "./pages/echarts/bar/index";
 import Line from "./pages/echarts/line/index";
 import Pie from "./pages/echarts/pie/index";
 import BikeMap from "./pages/map/bikeMap";
-
-
+import User from "./pages/user";
 
 import Employee from "./pages/user/index";
 import City from "./pages/city/index";
@@ -22,13 +20,11 @@ import Common from "./common";
 import OrderDetail from "./pages/order/detail";
 import { connect } from "react-redux";
 
-
 class IRouter extends React.Component {
   state = {};
   render() {
-
     console.log(this.props.userinfo);
-    if (this.props.userinfo) {
+    if (true) {
       return (
         <HashRouter>
           <App>
@@ -54,11 +50,12 @@ class IRouter extends React.Component {
                     <Switch>
                       <Route path="/home" component={Home} />
                       {/* <Route path="/login" component={Login} /> */}
-                      {/* <Route path="/register" component={Register} /> */}
+                      <Route path="/register" component={Register} />
                       <Route path="/charts/bar" component={Bar} />
                       <Route path="/charts/line" component={Line} />
                       <Route path="/charts/pie" component={Pie} />
                       <Route path="/bikeMap" component={BikeMap} />
+                      <Route path="/user" component={User} />
                       <Route path="/city" component={City} />
                       <Route path="/order" component={Order} />
                       <Redirect to="/home" />
@@ -106,7 +103,6 @@ class IRouter extends React.Component {
         </HashRouter>
       );
     }
-
   }
 }
 const userStateToProps = (state) => {
