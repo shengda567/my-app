@@ -49,7 +49,7 @@ export default class FormRegister extends React.Component {
         age: userInfo.age,
         status: userInfo.status,
         hobby: userInfo.hobby,
-        marriage: userInfo.marriage,
+        marriage: userInfo.marriage == true ? "married" : "not married",
         birthday: userInfo.birthday,
         address: userInfo.address,
       })

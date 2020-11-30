@@ -57,7 +57,7 @@ export default class Header extends React.Component {
             ""
           )}
           <Col span={menuType ? 18 : 24}>
-            <span>Welcome, {this.state.userName}</span>
+            <span>Welcome </span>
             <a href="/">Exit</a>
           </Col>
         </Row>

@@ -109,7 +109,7 @@ export default class User extends React.Component {
       await Axios.post("http://localhost:3001/employees/create", {
         username: data.username,
         status: data.status,
-        gender: data.sex,
+        gender: data.gender,
         hobby: data.hobby,
         marriage: data.marriage,
         birthday: data.birthday,
@@ -122,15 +122,15 @@ export default class User extends React.Component {
         return;
       });
     } else if (type == "edit") {
-      console.log(data.birthday.format("YYYY-MM-DD"));
-      console.log(typeof data.birthday.format("YYYY-MM-DD"));
+      //console.log(data.birthday.format("YYYY-MM-DD"));
+      //console.log(typeof data.birthday.format("YYYY-MM-DD"));
       await Axios.post("http://localhost:3001/employees/update", {
         username: data.username,
         status: data.status,
-        gender: data.sex,
+        gender: data.gender,
         hobby: data.hobby,
         marriage: data.marriage,
-        birthday: data.birthday.format("YYYY-MM-DD"),
+        birthday: data.birthday,
         address: data.address,
       }).then((res) => {
         this.setState({
@@ -186,10 +186,10 @@ export default class User extends React.Component {
         dataIndex: "username",
       },
       {
-        title: "Sex",
+        title: "Gender",
         dataIndex: "gender",
-        render(sex) {
-          return sex == "male" ? "M" : "F";
+        render(gender) {
+          return gender == "male" ? "M" : "F";
         },
       },
       {
@@ -210,7 +210,7 @@ export default class User extends React.Component {
         title: "Marriage",
         dataIndex: "marriage",
         render(isMarried) {
-          return isMarried ? "Married" : "Not Married";
+          return isMarried == "married" ? "Married" : "Not Married";
         },
       },
       {
@@ -377,8 +377,8 @@ class UserForm extends React.Component {
           )}
         </FormItem>
         <FormItem
-          label="Sex"
-          name="sex"
+          label="Gender"
+          name="gender"
           initialValue={type == "create" ? "" : userInfo.gender}
           {...formItemLayout}
         >
