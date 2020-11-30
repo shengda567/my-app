@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Card,
@@ -12,9 +11,11 @@ import {
 } from "antd";
 import axios from "../../axios";
 import Utils from "../../utils/utils";
+import Axios from "axios";
 // import BaseForm from "../../components/BaseForm";
 const FormItem = Form.Item;
 const Option = Select.Option;
+
 export default class Order extends React.Component {
   state = {
     orderInfo: {},
@@ -59,38 +60,30 @@ export default class Order extends React.Component {
     this.requestList();
   }
 
-  handleFilter = (params) => {
+  handleFilter = async (params) => {
     this.params = params;
-    this.requestList();
+    await this.requestList();
   };
-  requestList = () => {
+  requestList = async () => {
     let _this = this;
-    axios
-      .ajax({
-        url: "/order/list",
-        data: {
-          params: {
-              page:this.params.page
-          }
-        },
-      })
-      .then((res) => {
-        let list = res.result.item_list.map((item, index) => {
-          item.key = index;
-          return item;
-        });
-        this.setState({
-          list,
-          pagination: Utils.pagination(res, (current) => {
-            _this.params.page = current;
-            _this.requestList();
-          }),
-        });
+    await Axios.get("http://localhost:3001/orders").then((res) => {
+      let list = res.data.map((item, index) => {
+        item.key = index;
+        return item;
       });
+      this.setState({
+        list,
+        // pagination: Utils.pagination(res, (current) => {
+        //   _this.params.page = current;
+        //   _this.requestList();
+        // }),
+      });
+    });
   };
   // 订单结束确认
-  handleConfirm = () => {
+  handleConfirm = async () => {
     let item = this.state.selectedItem;
+    console.log(item);
     if (!item) {
       Modal.info({
         title: "Message",
@@ -98,46 +91,26 @@ export default class Order extends React.Component {
       });
       return;
     }
-    axios
-      .ajax({
-        url: "/order/ebike_info",
-        data: {
-          params: {
-            orderId: item.id,
-          },
-        },
-      })
-      .then((res) => {
-        if (res.code === 0) {
-          this.setState({
-            orderInfo: res.result,
-            orderConfirmVisble: true,
-          });
-        }
+    await Axios.post("http://localhost:3001/orders/complete", {
+      _id: item._id,
+      status: item.status,
+    }).then((res) => {
+      this.setState({
+        orderInfo: res.data,
+        orderConfirmVisble: true,
       });
+    });
   };
 
   // 结束订单
   handleFinishOrder = () => {
     let item = this.state.selectedItem;
-    axios
-      .ajax({
-        url: "/order/finish_order",
-        data: {
-          params: {
-            orderId: item.id,
-          },
-        },
-      })
-      .then((res) => {
-        if (res.code === 0) {
-          message.success("Order completed");
-          this.setState({
-            orderConfirmVisble: false,
-          });
-          this.requestList();
-        }
-      });
+
+    message.success("Order completed");
+    this.setState({
+      orderConfirmVisble: false,
+    });
+    this.requestList();
   };
   onRowClick = (record, index) => {
     let selectKey = [index];
@@ -156,10 +129,38 @@ export default class Order extends React.Component {
       });
       return;
     }
-    window.open(`/#/common/order/detail/${item.id}`, "_blank");
+    this.props.history.push(`/common/order/detail/${item._id}`);
+    //window.open(`/#/common/order/detail/${item._id}`, "_blank");
   };
+
+  search = async (city_name, start_time, end_time, status) => {
+    await Axios.post("http://localhost:3001/orders", {
+      city_name: city_name,
+      start_time: start_time,
+      end_time: end_time,
+      status: status,
+    }).then((res) => {
+      console.log(res);
+      let list = res.data.map((item, index) => {
+        item.key = index;
+        return item;
+      });
+      this.setState({
+        list: list,
+        // pagination: Utils.pagination(res, (current) => {
+        //   _this.params.page = current;
+        //   _this.requestList();
+        // }),
+      });
+    });
+  };
+
   render() {
     const columns = [
+      {
+        title: "City Name",
+        dataIndex: "city_name",
+      },
       {
         title: "Order number",
         dataIndex: "order_sn",
@@ -220,7 +221,7 @@ export default class Order extends React.Component {
     return (
       <div>
         <Card>
-          <FilterForm />
+          <FilterForm onRef={this.onRef} search={this.search} />
           {/* <BaseForm formList={this.formList} filterSubmit={this.handleFilter} /> */}
         </Card>
         <Card style={{ marginTop: 10 }}>
@@ -266,14 +267,14 @@ export default class Order extends React.Component {
             <FormItem label="Bike Number" {...formItemLayout}>
               {this.state.orderInfo.bike_sn}
             </FormItem>
-            <FormItem label="Battery" {...formItemLayout}>
-              {this.state.orderInfo.battery + "%"}
+            <FormItem label="Order Number" {...formItemLayout}>
+              {this.state.orderInfo.order_sn}
             </FormItem>
             <FormItem label="Start Time" {...formItemLayout}>
               {this.state.orderInfo.start_time}
             </FormItem>
-            <FormItem label="Current Location" {...formItemLayout}>
-              {this.state.orderInfo.location}
+            <FormItem label="Order Status" {...formItemLayout}>
+              {this.state.orderInfo.status}
             </FormItem>
           </Form>
         </Modal>
@@ -282,33 +283,47 @@ export default class Order extends React.Component {
   }
 }
 class FilterForm extends React.Component {
+  handleSubmit = () => {
+    let formInfo = this.refs.orderForm.getFieldsValue();
+    console.log(JSON.stringify(formInfo));
+    this.props.search(
+      formInfo.city_name,
+      formInfo.start_time.format("YYYY-MM-DD"),
+      formInfo.end_time.format("YYYY-MM-DD"),
+      formInfo.status
+    );
+  };
   render() {
     return (
-      <Form layout="inline">
-        <FormItem label="City" name="city_id">
+      <Form layout="inline" ref="orderForm">
+        <FormItem label="City" name="city_name">
           <Select style={{ width: 100 }} placeholder="All">
             <Option value="">All</Option>
-            <Option value="1">Hoboken</Option>
-            <Option value="2">Jersey City</Option>
-            <Option value="3">New York</Option>
+            <Option value="hoboken">Hoboken</Option>
+            <Option value="jersy city">Jersey City</Option>
+            <Option value="princeton">Princeton</Option>
           </Select>
         </FormItem>
-        <FormItem label="Order Time">
-          <DatePicker name="start_time" showTime format="YYYY-MM-DD HH:mm:ss"/>
+        <FormItem label="Order Time" name="start_time">
+          <DatePicker name="start_time" showTime format="YYYY-MM-DD" />
         </FormItem>
-        <FormItem>
-        <DatePicker name="End_time" showTime format="YYYY-MM-DD HH:mm:ss"/>
+        <FormItem name="end_time">
+          <DatePicker name="end_time" showTime format="YYYY-MM-DD" />
         </FormItem>
-        <FormItem label="Order status" name="auth_status">
+        <FormItem label="Order status" name="status">
           <Select style={{ width: 140 }} placeholder="All">
             <Option value="">All</Option>
-            <Option value="1">Riding</Option>
-            <Option value="2">Locked</Option>
-            <Option value="3">Completed</Option>
+            <Option value="riding">Riding</Option>
+            <Option value="locked">Locked</Option>
+            <Option value="completed">Completed</Option>
           </Select>
         </FormItem>
         <FormItem>
-          <Button type="primary" style={{ margin: "0 20px" }}>
+          <Button
+            type="primary"
+            onClick={this.handleSubmit}
+            style={{ margin: "0 20px" }}
+          >
             Search
           </Button>
           <Button>Reset</Button>
@@ -317,4 +332,3 @@ class FilterForm extends React.Component {
     );
   }
 }
-

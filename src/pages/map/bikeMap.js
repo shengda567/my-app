@@ -225,7 +225,7 @@ export default class Order extends React.Component {
         source: "route",
         layout: {
           "line-join": "round",
-          "line-cap": "round",
+          "line-cap": "square",
         },
         paint: {
           "line-color": "#088",

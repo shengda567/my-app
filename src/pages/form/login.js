@@ -21,7 +21,7 @@ class FormLogin extends React.Component {
     await this.searchUser(userInfo.username, userInfo.password)
       .then((res) => {
         message.success(
-          `${userInfo.username} Congrats, you have successfully registered!`
+          `${userInfo.username} Congrats, you have successfully login!`
         );
       })
       .catch((e) => {

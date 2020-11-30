@@ -22,9 +22,14 @@ import { connect } from "react-redux";
 
 class IRouter extends React.Component {
   state = {};
+  componentDidMount() {
+    this.setState({
+      lock: this.props.userinfo,
+    });
+  }
   render() {
     console.log(this.props.userinfo);
-    if (true) {
+    if (this.props.userinfo || this.state.lock) {
       return (
         <HashRouter>
           <App>
@@ -44,13 +49,24 @@ class IRouter extends React.Component {
   
               />*/}
               <Route
+                path="/common"
+                render={() => (
+                  <Common>
+                    <Route
+                      path="/common/order/detail/:orderId"
+                      component={OrderDetail}
+                    />
+                  </Common>
+                )}
+              />
+              <Route
                 path="/"
                 render={() => (
                   <Admin>
                     <Switch>
                       <Route path="/home" component={Home} />
                       {/* <Route path="/login" component={Login} /> */}
-                      <Route path="/register" component={Register} />
+                      {/* <Route path="/register" component={Register} /> */}
                       <Route path="/charts/bar" component={Bar} />
                       <Route path="/charts/line" component={Line} />
                       <Route path="/charts/pie" component={Pie} />

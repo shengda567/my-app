@@ -1,8 +1,10 @@
-
 import React from "react";
 import { Card } from "antd";
 import axios from "../../axios";
+import mapboxgl, { Marker } from "mapbox-gl";
+import "../order/bikeMap.css";
 import "./detail.less";
+import Axios from "axios";
 export default class Order extends React.Component {
   state = {};
 
@@ -13,24 +15,145 @@ export default class Order extends React.Component {
     }
   }
 
-  getDetailInfo = (orderId) => {
-    axios
-      .ajax({
-        url: "/order/detail",
-        data: {
-          params: {
-            orderId: orderId,
+  getDetailInfo = async (orderId) => {
+    await Axios.get(`http://localhost:3001/orders/${orderId}`).then((res) => {
+      this.setState({
+        orderInfo: res.data,
+      });
+      this.renderMap(res.data.routeList);
+    });
+  };
+
+  renderMap = (routeList) => {
+    let list = routeList;
+    //添加起始图标
+    var geojson = {
+      type: "FeatureCollection",
+      features: [
+        {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [-74.023733, 40.745183],
+          },
+          properties: {
+            title: "Bike loaction",
+            description: "Howe Center Lot",
           },
         },
-      })
-      .then((res) => {
-        if (res.code == 0) {
-          this.setState({
-            orderInfo: res.result,
-          });
-          //this.renderMap(res.result);
-        }
+        {
+          type: "Feature",
+          geometry: {
+            type: "Point",
+            coordinates: [-74.027554, 40.734979],
+          },
+          properties: {
+            title: "Bike loaction",
+            description: "Hoboken Terminal",
+          },
+        },
+      ],
+    };
+
+    mapboxgl.accessToken =
+      "pk.eyJ1IjoiamFja3NvbG8iLCJhIjoiY2toNnBwMXRjMDBubTJycGQyZ3FrbHhnYiJ9.ncXh5O5Yi17CBF2cFKn3iA";
+    var map = new mapboxgl.Map({
+      container: "orderDetailMap",
+      center: [-74.023733, 40.745183],
+      style: "mapbox://styles/jacksolo/ckh6qmrra040d19qe44v4wi6w",
+      zoom: 13,
+    });
+
+    var start = document.createElement("div");
+    start.className = "start_marker";
+
+    var end = document.createElement("div");
+    end.className = "end_marker";
+
+    new mapboxgl.Marker(start)
+      .setLngLat(list[0])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+          .setHTML("<h3>" + "start position" + "</h3>")
+      )
+      .addTo(map);
+
+    new mapboxgl.Marker(end)
+      .setLngLat(list[list.length - 1])
+      .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+          .setHTML("<h3>" + "end position" + "</h3>")
+      )
+      .addTo(map);
+
+    /*
+        var marker = new mapboxgl.Marker()
+                .setLngLat([-74.024827,40.745500])
+                .addTo(this.map);
+        */
+
+    // 行驶路线
+    map.on("load", function () {
+      map.addSource("route", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          properties: {},
+          geometry: {
+            type: "LineString",
+            coordinates: list,
+          },
+        },
       });
+      map.addLayer({
+        id: "route",
+        type: "line",
+        source: "route",
+        layout: {
+          "line-join": "round",
+          "line-cap": "round",
+        },
+        paint: {
+          "line-color": "#088",
+          "line-width": 8,
+        },
+      });
+    });
+
+    // 服务区路线
+    map.on("load", function () {
+      map.addSource("maine", {
+        type: "geojson",
+        data: {
+          type: "Feature",
+          geometry: {
+            type: "Polygon",
+            coordinates: [
+              [
+                [-74.010777, 40.777223], //port imperial
+                [-74.031356, 40.787589], //tonnelle ave station
+                [-74.082462, 40.72537], //lincoln park
+                [-74.033762, 40.712222], //exchange place
+              ],
+            ],
+          },
+        },
+      });
+      map.addLayer({
+        id: "maine",
+        type: "fill",
+        source: "maine",
+        layout: {},
+        paint: {
+          "fill-color": "#048",
+          "fill-opacity": 0.4,
+        },
+      });
+    });
+
+    // 添加地图中的自行车
+
+    // 添加地图控件
   };
 
   /*renderMap = (result)=>{
@@ -176,7 +299,7 @@ export default class Order extends React.Component {
     return (
       <div style={{ width: "100%" }}>
         <Card>
-          {/* <div id="orderDetailMap" className="order-map"></div> */}
+          <div id="orderDetailMap" className="order-map"></div>
           <div className="detail-items">
             <div className="item-title">Order Info</div>
             <ul className="detail-form">
@@ -210,12 +333,12 @@ export default class Order extends React.Component {
             <div className="item-title">Route</div>
             <ul className="detail-form">
               <li>
-                <div className="detail-form-left">Start</div>
-                <div className="detail-form-content">{info.start_location}</div>
+                <div className="detail-form-left">Start Time</div>
+                <div className="detail-form-content">{info.start_time}</div>
               </li>
               <li>
-                <div className="detail-form-left">End</div>
-                <div className="detail-form-content">{info.end_location}</div>
+                <div className="detail-form-left">End Time</div>
+                <div className="detail-form-content">{info.end_time}</div>
               </li>
               <li>
                 <div className="detail-form-left">Distance</div>
@@ -228,4 +351,3 @@ export default class Order extends React.Component {
     );
   }
 }
-

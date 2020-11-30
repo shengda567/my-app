@@ -13,11 +13,13 @@ import axios from "../../axios/index";
 import Utils from "../../utils/utils";
 import ETable from "../../components/ETable/index";
 import Moment from "moment";
+import moment from "moment";
 import Axios from "axios";
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioGroup = Radio.Group;
+
 export default class User extends React.Component {
   state = {
     list: [],
@@ -51,6 +53,7 @@ export default class User extends React.Component {
   // 操作员工
   handleOperator = (type) => {
     let item = this.state.selectedItem;
+    console.log(item);
     if (type == "create") {
       this.setState({
         title: "Create",
@@ -75,55 +78,71 @@ export default class User extends React.Component {
       if (!item) {
         Modal.info({
           title: "Notification",
-          content: "Please select one user",
+          content: "Please choose one item to delete.",
         });
         return;
       }
-      Utils.ui.confirm({
-        text: "Ready to delete the user?",
-        onOk: () => {
-          axios
-            .ajax({
-              url: "/user/delete",
-              data: {
-                params: {
-                  id: item.id,
-                },
-              },
-            })
-            .then((res) => {
-              if (res.code == 0) {
-                this.setState({
-                  isVisible: false,
-                });
-                this.requestList();
-              }
+      let _this = this;
+      Modal.confirm({
+        title: "Confim to delete?",
+        content: "You will delete the user you choose, right?",
+        async onOk() {
+          await Axios.post("http://localhost:3001/employees/delete", {
+            id: item._id,
+          }).then((res) => {
+            _this.setState({
+              isVisible: false,
             });
+            _this.requestList();
+          });
         },
       });
     }
   };
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     let type = this.state.type;
-    let data = this.userForm.props.form.getFieldsValue();
-    axios
-      .ajax({
-        url: type == "create" ? "/user/add" : "/user/edit",
-        data: {
-          params: {
-            ...data,
-          },
-        },
-      })
-      .then((res) => {
-        if (res.code == 0) {
-          this.setState({
-            isVisible: false,
-          });
-          this.requestList();
-        }
+    let data = this.refs.userForm.myGetFieldsValue();
+    console.log(JSON.stringify(data));
+
+    if (type == "create") {
+      await Axios.post("http://localhost:3001/employees/create", {
+        username: data.username,
+        status: data.status,
+        gender: data.sex,
+        birthday: data.birthday,
+        address: data.address,
+      }).then((res) => {
+        this.setState({
+          isVisible: false,
+        });
+        this.requestList();
+        return;
       });
+    } else if (type == "edit") {
+      console.log(data.birthday.format("YYYY-MM-DD"));
+      console.log(typeof data.birthday.format("YYYY-MM-DD"));
+      await Axios.post("http://localhost:3001/employees/update", {
+        username: data.username,
+        status: data.status,
+        gender: data.sex,
+        birthday: data.birthday.format("YYYY-MM-DD"),
+        address: data.address,
+      }).then((res) => {
+        this.setState({
+          isVisible: false,
+        });
+        this.requestList();
+        return;
+      });
+    } else if (type == "detail") {
+      this.setState({
+        isVisible: false,
+      });
+      this.requestList();
+      return;
+    } else if (type == "delete") {
+    }
   };
 
   handleSearch = () => {
@@ -199,6 +218,8 @@ export default class User extends React.Component {
         dataIndex: "address",
       },
     ];
+    console.log(this.state);
+
     return (
       <div>
         <Card style={{ width: 1400 }}>
@@ -241,19 +262,22 @@ export default class User extends React.Component {
         </Card>
         <div className="content-wrap">
           <ETable
+            updateSelectedItem={Utils.updateSelectedItem.bind(this)}
             columns={columns}
-            selectedRowKeys={this.state.selectedRowKeys}
             dataSource={this.state.list}
-            pagination={this.state.pagination}
+            selectedRowKeys={this.state.selectedRowKeys}
+            selectedItem={this.state.selectedItem}
+            pagination={false}
           />
         </div>
         <Modal
+          ref="Modal"
           title={this.state.title}
           visible={this.state.isVisible}
           onOk={this.handleSubmit}
           width={800}
           onCancel={() => {
-            this.userForm.props.form.resetFields();
+            this.refs.userForm.myresetField();
             this.setState({
               isVisible: false,
               userInfo: "",
@@ -263,7 +287,7 @@ export default class User extends React.Component {
           <UserForm
             userInfo={this.state.userInfo}
             type={this.state.type}
-            wrappedComponentRef={(inst) => (this.userForm = inst)}
+            ref="userForm"
           />
         </Modal>
       </div>
@@ -271,6 +295,12 @@ export default class User extends React.Component {
   }
 }
 class UserForm extends React.Component {
+  myGetFieldsValue = () => {
+    return this.refs.userForm.getFieldsValue();
+  };
+  myresetField = () => {
+    this.refs.userForm.resetFields();
+  };
   getState = (state) => {
     return {
       1: "Entrepreneur",
@@ -280,68 +310,112 @@ class UserForm extends React.Component {
       5: "Administrator",
     }[state];
   };
-
+  getFormInitialValue = (type, userInfo) => {
+    if (type == "create") {
+      this.setState({
+        formInitialValue: {},
+      });
+      return;
+    } else if (type == "edit") {
+      this.setState({
+        formInitialValue: {
+          username: userInfo.username,
+          gender: userInfo.gender,
+          status: userInfo.status,
+          birthday: userInfo.birthday,
+          address: userInfo.address,
+        },
+      });
+      return;
+    }
+  };
   render() {
-    const { getFieldDecorator } = this.props.form;
+    //const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: { span: 5 },
       wrapperCol: { span: 16 },
     };
     const userInfo = this.props.userInfo || {};
     const type = this.props.type;
+
+    console.log(this.props);
+    //this.getFormInitialValue(type, userInfo);
     return (
-      <Form layout="horizontal">
-        <FormItem label="Name" {...formItemLayout}>
-          {userInfo && type == "detail"
-            ? userInfo.username
-            : getFieldDecorator("user_name", {
-                initialValue: userInfo.username,
-              })(<Input type="text" placeholder="Please enter name:" />)}
+      <Form
+        layout="horizontal"
+        ref="userForm"
+        // initialValues={{
+        //   username: userInfo.username,
+        //   gender: userInfo.gender,
+        //   status: userInfo.status,
+        //   birthday: userInfo.birthday,
+        //   address: userInfo.address,
+        // }}
+      >
+        <FormItem
+          label="Name"
+          name="username"
+          initialValue={type == "create" ? "" : userInfo.username}
+          {...formItemLayout}
+        >
+          {userInfo && type == "detail" ? (
+            userInfo.username
+          ) : (
+            <Input type="text" placeholder="Please enter name:" />
+          )}
         </FormItem>
-        <FormItem label="Sex" {...formItemLayout}>
-          {userInfo && type == "detail"
-            ? userInfo.sex == 1
-              ? "M"
-              : "F"
-            : getFieldDecorator("sex", {
-                initialValue: userInfo.sex,
-              })(
-                <RadioGroup>
-                  <Radio value={1}>M</Radio>
-                  <Radio value={2}>F</Radio>
-                </RadioGroup>
-              )}
+        <FormItem
+          label="Sex"
+          name="sex"
+          initialValue={type == "create" ? "" : userInfo.gender}
+          {...formItemLayout}
+        >
+          {userInfo && type == "detail" ? (
+            userInfo.gender
+          ) : (
+            <RadioGroup>
+              <Radio value="male">M</Radio>
+              <Radio value="female">F</Radio>
+            </RadioGroup>
+          )}
         </FormItem>
-        <FormItem label="Status" {...formItemLayout}>
-          {userInfo && type == "detail"
-            ? this.getState(userInfo.state)
-            : getFieldDecorator("state", {
-                initialValue: userInfo.state,
-              })(
-                <Select>
-                  <Option value={1}>Entrepreneur</Option>
-                  <Option value={2}>Employee</Option>
-                  <Option value={3}>Engineer</Option>
-                  <Option value={4}>Manager</Option>
-                  <Option value={5}>Administrator</Option>
-                </Select>
-              )}
+        <FormItem
+          label="Status"
+          name="status"
+          initialValue={type == "create" ? "" : userInfo.status}
+          {...formItemLayout}
+        >
+          {userInfo && type == "detail" ? (
+            userInfo.status
+          ) : (
+            <Select>
+              <Option value="Entrepreneur">Entrepreneur</Option>
+              <Option value="Employee">Employee</Option>
+              <Option value="Engineer">Engineer</Option>
+              <Option value="Manager">Manager</Option>
+              <Option value="Administrator">Administrator</Option>
+            </Select>
+          )}
         </FormItem>
-        <FormItem label="Birthday" {...formItemLayout}>
-          {userInfo && type == "detail"
-            ? userInfo.birthday
-            : getFieldDecorator("birthday", {
-                initialValue: Moment(userInfo.birthday),
-              })(<DatePicker />)}
+        <FormItem
+          label="Birthday"
+          name="birthday"
+          //initialValue={new Date(userInfo.birthday)}
+          {...formItemLayout}
+        >
+          {userInfo && type == "detail" ? userInfo.birthday : <DatePicker />}
         </FormItem>
-        <FormItem label="Address" {...formItemLayout}>
-          {userInfo && type == "detail"
-            ? userInfo.address
-            : getFieldDecorator("address", {
-                initialValue: userInfo.address,
-              })(
-                <Input.TextArea rows={3} placeholder="Please enter address:" />
-              )}
+        <FormItem
+          label="Address"
+          name="address"
+          initialValue={type == "create" ? "" : userInfo.address}
+          {...formItemLayout}
+        >
+          {userInfo && type == "detail" ? (
+            userInfo.address
+          ) : (
+            <Input.TextArea rows={3} placeholder="Please enter address:" />
+          )}
         </FormItem>
       </Form>
     );
