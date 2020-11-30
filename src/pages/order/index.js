@@ -12,6 +12,7 @@ import {
 import axios from "../../axios";
 import Utils from "../../utils/utils";
 import Axios from "axios";
+import ETable from "./../../components/ETable";
 // import BaseForm from "../../components/BaseForm";
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -237,19 +238,15 @@ export default class Order extends React.Component {
           </Button>
         </Card>
         <div className="content-wrap">
-          <Table
-            bordered
+          <ETable
+            updateSelectedItem={Utils.updateSelectedItem.bind(this)}
             columns={columns}
             dataSource={this.state.list}
+            selectedRowKeys={this.state.selectedRowKeys}
+            selectedIds={this.state.selectedIds}
+            selectedItem={this.state.selectedItem}
             pagination={this.state.pagination}
-            rowSelection={rowSelection}
-            onRow={(record, index) => {
-              return {
-                onClick: () => {
-                  this.onRowClick(record, index);
-                },
-              };
-            }}
+            // rowSelection="checkbox"
           />
         </div>
         <Modal
@@ -300,7 +297,7 @@ class FilterForm extends React.Component {
           <Select style={{ width: 100 }} placeholder="All">
             <Option value="">All</Option>
             <Option value="hoboken">Hoboken</Option>
-            <Option value="jersy city">Jersey City</Option>
+            <Option value="jersey city">Jersey City</Option>
             <Option value="princeton">Princeton</Option>
           </Select>
         </FormItem>

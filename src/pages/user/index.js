@@ -110,6 +110,8 @@ export default class User extends React.Component {
         username: data.username,
         status: data.status,
         gender: data.sex,
+        hobby: data.hobby,
+        marriage: data.marriage,
         birthday: data.birthday,
         address: data.address,
       }).then((res) => {
@@ -126,6 +128,8 @@ export default class User extends React.Component {
         username: data.username,
         status: data.status,
         gender: data.sex,
+        hobby: data.hobby,
+        marriage: data.marriage,
         birthday: data.birthday.format("YYYY-MM-DD"),
         address: data.address,
       }).then((res) => {
@@ -206,16 +210,22 @@ export default class User extends React.Component {
         title: "Marriage",
         dataIndex: "marriage",
         render(isMarried) {
-          return isMarried ? "Maiired" : "Not Married";
+          return isMarried ? "Married" : "Not Married";
         },
       },
       {
         title: "Birthday",
         dataIndex: "birthday",
+        render(birthday) {
+          return birthday;
+        },
       },
       {
         title: "Address",
         dataIndex: "address",
+        render(address) {
+          return address;
+        },
       },
     ];
     console.log(this.state);
@@ -301,34 +311,36 @@ class UserForm extends React.Component {
   myresetField = () => {
     this.refs.userForm.resetFields();
   };
-  getState = (state) => {
-    return {
-      1: "Entrepreneur",
-      2: "Employee",
-      3: "Engineer",
-      4: "Manager",
-      5: "Administrator",
-    }[state];
-  };
-  getFormInitialValue = (type, userInfo) => {
-    if (type == "create") {
-      this.setState({
-        formInitialValue: {},
-      });
-      return;
-    } else if (type == "edit") {
-      this.setState({
-        formInitialValue: {
-          username: userInfo.username,
-          gender: userInfo.gender,
-          status: userInfo.status,
-          birthday: userInfo.birthday,
-          address: userInfo.address,
-        },
-      });
-      return;
-    }
-  };
+  // getState = (state) => {
+  //   return {
+  //     1: "Entrepreneur",
+  //     2: "Employee",
+  //     3: "Engineer",
+  //     4: "Manager",
+  //     5: "Administrator",
+  //   }[state];
+  // };
+  // getFormInitialValue = (type, userInfo) => {
+  //   if (type == "create") {
+  //     this.setState({
+  //       formInitialValue: {},
+  //     });
+  //     return;
+  //   } else if (type == "edit") {
+  //     this.setState({
+  //       formInitialValue: {
+  //         username: userInfo.username,
+  //         gender: userInfo.sex,
+  //         status: userInfo.status,
+  //         hobby: userInfo.hobby,
+  //         marriage: userInfo.marriage,
+  //         birthday: userInfo.birthday,
+  //         address: userInfo.address,
+  //       },
+  //     });
+  //     return;
+  //   }
+  // };
   render() {
     //const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -389,18 +401,47 @@ class UserForm extends React.Component {
             userInfo.status
           ) : (
             <Select>
-              <Option value="Entrepreneur">Entrepreneur</Option>
-              <Option value="Employee">Employee</Option>
-              <Option value="Engineer">Engineer</Option>
-              <Option value="Manager">Manager</Option>
-              <Option value="Administrator">Administrator</Option>
+              <Option value="entrepreneur">Entrepreneur</Option>
+              <Option value="employee">Employee</Option>
+              <Option value="engineer">Engineer</Option>
+              <Option value="manager">Manager</Option>
+              <Option value="administrator">Administrator</Option>
             </Select>
           )}
         </FormItem>
         <FormItem
+          label="Hobby"
+          name="hobby"
+          initialValue={type == "create" ? "" : userInfo.hobby}
+          {...formItemLayout}
+        >
+          {userInfo && type == "detail" ? (
+            userInfo.hobby
+          ) : (
+            <Input.TextArea rows={3} placeholder="Please enter your hobby:" />
+          )}
+        </FormItem>
+
+        <FormItem
+          label="Marriage"
+          name="marriage"
+          initialValue={type == "create" ? "" : userInfo.marriage}
+          {...formItemLayout}
+        >
+          {userInfo && type == "detail" ? (
+            userInfo.marriage
+          ) : (
+            <RadioGroup>
+              <Radio value="married">Yes</Radio>
+              <Radio value="not married">No</Radio>
+            </RadioGroup>
+          )}
+        </FormItem>
+
+        <FormItem
           label="Birthday"
           name="birthday"
-          //initialValue={new Date(userInfo.birthday)}
+          //initialValue={type == "create" ? "" : userInfo.birthday}
           {...formItemLayout}
         >
           {userInfo && type == "detail" ? userInfo.birthday : <DatePicker />}
